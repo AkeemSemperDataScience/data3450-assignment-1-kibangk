@@ -17,7 +17,8 @@ def age_splitter(df, col_name, age_threshold):
         - df_below: DataFrame with rows where age is below the threshold.
         - df_above_equal: DataFrame with rows where age is above or equal to the threshold.
     """
-    pass
+    Gamechanger
+    
     
 def effectSizer(df, num_col, cat_col):
     """
