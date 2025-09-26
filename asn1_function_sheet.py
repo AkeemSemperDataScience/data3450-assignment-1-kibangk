@@ -17,7 +17,30 @@ def age_splitter(df, col_name, age_threshold):
         - df_below: DataFrame with rows where age is below the threshold.
         - df_above_equal: DataFrame with rows where age is above or equal to the threshold.
     """
-    pass
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.read_csv("LabourTrainingEvaluationData.csv")
+def age_splitter(df: pd.DataFrame, col: str, threshold: int):
+    below = df[df[col] < threshold].copy()
+    above_equal = df[df[col] >= threshold].copy()
+    return below, above_equal
+below_30, above_equal_30 = age_splitter(df, "Age", 30)
+mean_below = below_30["Earnings_1978"].mean()
+mean_above = above_equal_30["Earnings_1978"].mean()
+
+print(f"Mean Earnings (1978) below 30: {mean_below:.2f}")
+print(f"Mean Earnings (1978) 30 and above: {mean_above:.2f}")
+
+if mean_below > mean_above:
+    print("→ People below 30 earned more on average in 1978.")
+else:
+    print("→ People 30 and above earned more on average in 1978.")
+
+# ---- Visual comparison ----
+plt.bar(["Below 30", "30 and above"], [mean_below, mean_above], color=["skyblue", "orange"])
+plt.ylabel("Mean Earnings (1978)")
+plt.title("Comparison of 1978 Earnings by Age Group")
+plt.show()
     
     
 def effectSizer(df, num_col, cat_col):
@@ -34,7 +57,25 @@ def effectSizer(df, num_col, cat_col):
     Raises:
     ValueError: If the categorical column does not have exactly two unique values.
     """
-    pass
+    passdef effect_size_by_category(df, num_col, cat_col):
+    results = {}
+    categories = df[cat_col].dropna().unique()
+    
+    for cat in categories:
+        binary_col = to_binary(df[cat_col], cat)
+        g1 = df[binary_col == 1][num_col].dropna()
+        g0 = df[binary_col == 0][num_col].dropna()
+        
+        if len(g1) > 0 and len(g0) > 0:
+            d = compute_cohens_d(g1, g0)
+            results[cat] = d
+    
+    if results:
+        # Find category with largest absolute effect size
+        largest_cat = max(results, key=lambda k: abs(results[k]))
+        return largest_cat, results[largest_cat]
+    else:
+        return None, np.nan
 
 def cohenEffectSize(group1, group2):
     # You need to implement this helper function
